@@ -8,7 +8,7 @@
 |-------|---------|
 | Project Name | AWS Secure Admin Hub |
 | Domain | aws.techcloudup.com |
-| Live URL | https://aws.techcloudup.com |
+| Live URL | https://aws.techcloudup.com (staging: https://main.d2paaciq0hy5p5.amplifyapp.com) |
 | GitHub | https://github.com/scale600/aws-secure-admin-hub |
 | Target Role | AWS Cloud Admin / Cloud Operations Engineer / SRE / DevOps (Mid~Senior) |
 
@@ -199,12 +199,12 @@ During an interview: "Let me actually start this instance right now" — the mos
 
 ### 🏗️ Phase 1 — Foundation
 
-- [ ] Create Next.js 14 (App Router) + TypeScript + Tailwind CSS project
-- [ ] Create AWS Amplify app and connect GitHub (CI/CD pipeline)
-- [ ] Implement common layout (Sidebar, Header, Dark Mode toggle)
-- [ ] Build Home page
-- [ ] Build About Me page
-- [ ] Verify first Amplify deployment (staging domain)
+- [x] Create Next.js 14 (App Router) + TypeScript + Tailwind CSS project
+- [x] Create AWS Amplify app and connect GitHub (CI/CD pipeline)
+- [x] Implement common layout (Sidebar, Header, Dark Mode toggle)
+- [x] Build Home page
+- [x] Build About Me page
+- [x] Verify first Amplify deployment (staging domain) → https://main.d2paaciq0hy5p5.amplifyapp.com
 
 ---
 
