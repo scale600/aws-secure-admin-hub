@@ -61,3 +61,6 @@ amplify/backend/.temp
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local-only docs (personal notes / interview scripts)
+aws.techcloudup-script.md
