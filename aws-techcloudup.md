@@ -59,20 +59,18 @@ This is not a simple showcase — it is a **live demo that proves real-world AWS
 
 ### Service Summary
 
-| AWS Service | Role | Cost |
-|-------------|------|------|
-| Amplify Hosting | Next.js SSR/SSG hosting, CI/CD | $0 (Free Tier) |
-| API Gateway (HTTP) | REST endpoints, Lambda trigger | $0 (Free Tier) |
-| Lambda (Node.js 20) | Business logic, IAM Policy generation, metrics fetch | $0 (Free Tier) |
-| DynamoDB | AccessRequests table, TTL | $0 (Permanent Free) |
-| Cognito User Pool | JWT auth, Guest Mode fallback | $0 (Free Tier) |
-| S3 | Static files, CloudTrail log bucket | $0 (Free Tier) |
-| CloudTrail | 1 Trail — real API activity collection | $0 (Management events free) |
-| CloudWatch | Real Lambda/API GW metric visualization | $0 (Basic metrics free) |
-| EC2 t3.micro | Demo instance (Stopped by default) | ~$0.64/mo (EBS only) |
-| Route 53 | aws.techcloudup.com hosted zone | $0.50/mo |
-
-**Estimated Monthly Cost: ~$1.14** (EC2 EBS $0.64 + Route 53 $0.50)
+| AWS Service | Role |
+|-------------|------|
+| Amplify Hosting | Next.js SSR/SSG hosting, CI/CD |
+| API Gateway (HTTP) | REST endpoints, Lambda trigger |
+| Lambda (Node.js 20) | Business logic, IAM Policy generation, metrics fetch |
+| DynamoDB | AccessRequests table, TTL |
+| Cognito User Pool | JWT auth, Guest Mode fallback |
+| S3 | Static files, CloudTrail log bucket |
+| CloudTrail | 1 Trail — real API activity collection |
+| CloudWatch | Real Lambda/API GW metric visualization |
+| EC2 t3.micro | Demo instance (Stopped by default) |
+| Route 53 | aws.techcloudup.com hosted zone |
 
 ---
 
@@ -87,7 +85,7 @@ This is not a simple showcase — it is a **live demo that proves real-world AWS
 
 ### EC2 Start/Stop Flow (Key Demo Point)
 ```
-Default:   STOPPED → $0 compute cost, only $0.64/mo EBS
+Default:   STOPPED → no compute cost (EBS only)
 Demo:      Click [Start]
             → Lambda: ec2.startInstances()
             → State polling (pending → running)
