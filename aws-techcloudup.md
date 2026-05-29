@@ -211,39 +211,39 @@ During an interview: "Let me actually start this instance right now" — the mos
 ### ⚙️ Phase 2 — LIVE Backend
 
 #### AWS Infrastructure Setup
-- [ ] Create DynamoDB table (`AccessRequests`, TTL enabled, GSI added)
-- [ ] Create Lambda function (Node.js 20, minimal IAM Role)
-- [ ] Create API Gateway (HTTP API) → Lambda integration
-- [ ] Create Cognito User Pool (Guest Mode fallback)
-- [ ] Create S3 bucket for CloudTrail logs (public access blocked)
-- [ ] **Activate CloudTrail Trail** → send logs to S3 bucket above
-- [ ] **Provision EC2 t3.micro instance** (Amazon Linux 2023, basic security group)
+- [x] Create DynamoDB table (`AccessRequests`, TTL enabled, GSI added) → `arn:aws:dynamodb:us-east-1:753523452116:table/AccessRequests`
+- [x] Create Lambda function (Node.js 20, minimal IAM Role) → `aws-secure-admin-hub`
+- [x] Create API Gateway (HTTP API) → Lambda integration → `https://p64ztvrqjj.execute-api.us-east-1.amazonaws.com`
+- [x] Create Cognito User Pool (Guest Mode fallback) → `us-east-1_gAU7cIkpA`
+- [x] Create S3 bucket for CloudTrail logs (public access blocked) → `aws-secure-admin-hub-cloudtrail-753523452116`
+- [x] **Activate CloudTrail Trail** → send logs to S3 bucket above → `aws-secure-admin-hub-trail`
+- [x] **Provision EC2 t3.micro instance** (Amazon Linux 2023, basic security group) → `i-02524a34715bc6930`
 - [ ] Verify EC2 Session Manager connection (confirm SSM Agent)
-- [ ] Switch EC2 instance to Stopped state
+- [x] Switch EC2 instance to Stopped state ✓
 
 #### Backend Feature Implementation
-- [ ] Access Request create API (POST /requests → DynamoDB write)
-- [ ] Access Request list API (GET /requests)
-- [ ] Access Request status update API (PATCH /requests/{id})
-- [ ] IAM Policy Generator Lambda (Action/Resource/Condition → JSON)
-- [ ] EC2 Start API (ec2.startInstances → return state)
-- [ ] EC2 Stop API (ec2.stopInstances → return state)
-- [ ] EC2 status query API (ec2.describeInstances → polling)
-- [ ] S3 bucket policy query API (s3.getBucketPolicy, s3.getPublicAccessBlock)
+- [x] Access Request create API (POST /requests → DynamoDB write)
+- [x] Access Request list API (GET /requests)
+- [x] Access Request status update API (PATCH /requests/{id})
+- [x] IAM Policy Generator Lambda (Action/Resource/Condition → JSON)
+- [x] EC2 Start API (ec2.startInstances → return state)
+- [x] EC2 Stop API (ec2.stopInstances → return state)
+- [x] EC2 status query API (ec2.describeInstances → polling)
+- [x] S3 bucket policy query API (s3.getBucketPolicy, s3.getPublicAccessBlock)
 - [ ] CloudTrail log parsing Lambda (S3 event trigger → DynamoDB write)
-- [ ] CloudTrail event list API (GET /cloudtrail/events)
-- [ ] CloudWatch metrics API (Lambda invocations, API GW request count)
+- [x] CloudTrail event list API (GET /cloudtrail/events)
+- [x] CloudWatch metrics API (Lambda invocations, API GW request count)
 
 ---
 
 ### 🖥️ Phase 3 — Frontend Pages
 
 #### Admin Dashboard
-- [ ] LIVE card: Recent Access Request count (DynamoDB aggregation)
-- [ ] LIVE card: Lambda invocations / API GW request count (CloudWatch)
-- [ ] DEMO card: EC2 count, S3 count, Security Score (mock data)
+- [x] LIVE card: Recent Access Request count (DynamoDB aggregation)
+- [x] LIVE card: Lambda invocations / API GW request count (CloudWatch)
+- [x] DEMO card: EC2 count, S3 count, Security Score (mock data)
 - [ ] DEMO chart: CPU / Network / Cost Trend (Recharts)
-- [ ] Implement LIVE/DEMO badge component
+- [x] Implement LIVE/DEMO badge component
 
 #### EC2 Access Management Page
 - [ ] Access request form UI (instance ID, purpose, duration, permission level)
