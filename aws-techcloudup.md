@@ -246,28 +246,28 @@ During an interview: "Let me actually start this instance right now" — the mos
 - [x] Implement LIVE/DEMO badge component
 
 #### EC2 Access Management Page
-- [ ] Access request form UI (instance ID, purpose, duration, permission level)
-- [ ] Form submit → API call → DynamoDB write integration
-- [ ] Request list table (color-coded by status)
-- [ ] Approve / Reject buttons → status update API integration
-- [ ] On approval: show generated IAM Policy JSON in modal
+- [x] Access request form UI (instance ID, purpose, duration, permission level)
+- [x] Form submit → API call → DynamoDB write integration
+- [x] Request list table (color-coded by status)
+- [x] Approve / Reject buttons → status update API integration
+- [x] On approval: show generated IAM Policy JSON in modal
 
 #### Resource Management Page
-- [ ] EC2 instance list (real DescribeInstances)
-- [ ] Start/Stop button + status polling UI (pending → running animation)
-- [ ] S3 bucket list + real bucket policy / PublicAccessBlock display
-- [ ] VPC overview (mock diagram — DEMO)
-- [ ] CloudWatch metric graphs (real Lambda/API GW data)
+- [x] EC2 instance list (real DescribeInstances)
+- [x] Start/Stop button + status polling UI (pending → running animation)
+- [x] S3 bucket list + real bucket policy / PublicAccessBlock display
+- [x] VPC overview (mock diagram — DEMO)
+- [x] CloudWatch metric graphs (real Lambda/API GW data)
 
 #### Security Center Page
-- [ ] CloudTrail event log viewer (real parsed data, filter/search)
-- [ ] IAM Policy Generator UI (Action/Resource/Condition form + JSON output)
-- [ ] GuardDuty Findings list (DEMO, Severity filter)
-- [ ] Security Best Practices Checklist
+- [x] CloudTrail event log viewer (real parsed data, filter/search)
+- [x] IAM Policy Generator UI (Action/Resource/Condition form + JSON output)
+- [x] GuardDuty Findings list (DEMO, Severity filter)
+- [x] Security Best Practices Checklist
 
 #### Automation Demo Page
-- [ ] Lambda function list + real execution history (CloudWatch Logs)
-- [ ] SSM Patch Management simulation (DEMO)
+- [x] Lambda function list + real execution history (CloudWatch Logs)
+- [x] SSM Patch Management simulation (DEMO)
 
 ---
 
