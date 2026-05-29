@@ -13,14 +13,10 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-interface Props {
-  initial?: { requests: AccessRequest[]; metrics: CloudWatchMetrics | null };
-}
-
-export default function DashboardClient({ initial }: Props) {
-  const [requests, setRequests] = useState<AccessRequest[]>(initial?.requests ?? []);
-  const [metrics, setMetrics] = useState<CloudWatchMetrics | null>(initial?.metrics ?? null);
-  const [loading, setLoading] = useState(!initial);
+export default function DashboardClient() {
+  const [requests, setRequests] = useState<AccessRequest[]>([]);
+  const [metrics, setMetrics] = useState<CloudWatchMetrics | null>(null);
+  const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   const load = async () => {
@@ -40,13 +36,7 @@ export default function DashboardClient({ initial }: Props) {
     }
   };
 
-  useEffect(() => {
-    if (initial) {
-      setLastRefresh(new Date());
-    } else {
-      load();
-    }
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const todayRequests = requests.filter(
     (r) => new Date(r.requestedAt).toDateString() === new Date().toDateString()
