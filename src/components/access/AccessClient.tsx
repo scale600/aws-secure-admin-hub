@@ -198,7 +198,7 @@ export default function AccessClient() {
         ) : requests.length === 0 ? (
           <div className="p-12 flex flex-col items-center gap-3 text-gray-400">
             <Clock size={28} />
-            <p className="text-sm">No access requests yet. Click "New Request" to create one.</p>
+            <p className="text-sm">No access requests yet. Click &quot;New Request&quot; to create one.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

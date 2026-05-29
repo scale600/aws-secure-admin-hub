@@ -1,19 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api, type GeneratePolicyInput } from "@/lib/api";
+import { api, type GeneratePolicyInput, type CloudTrailEvent } from "@/lib/api";
 import Badge from "@/components/ui/Badge";
-import { RefreshCw, Plus, Minus, AlertTriangle, CheckCircle2 } from "lucide-react";
-
-interface CloudTrailEvent {
-  eventId?: string;
-  eventName?: string;
-  eventSource?: string;
-  sourceIPAddress?: string;
-  eventTime?: string;
-  userName?: string;
-  [key: string]: unknown;
-}
+import { Plus, Minus, AlertTriangle, CheckCircle2 } from "lucide-react";
 
 const GUARD_DUTY_MOCK = [
   { id: "gd-001", severity: "High", type: "UnauthorizedAccess:IAMUser/MaliciousIPCaller", resource: "IAMUser/temp-user", time: "10m ago" },
@@ -117,11 +107,11 @@ export default function SecurityClient() {
                 <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {events.map((e, i) => (
                     <tr key={e.eventId || i} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                      <td className="px-4 py-3 font-mono text-xs text-orange-500">{String(e.eventName || "—")}</td>
-                      <td className="px-4 py-3 text-xs text-gray-500">{String(e.eventSource || "—")}</td>
-                      <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">{String(e.userName || "—")}</td>
-                      <td className="px-4 py-3 font-mono text-xs text-gray-400">{String(e.sourceIPAddress || "—")}</td>
-                      <td className="px-4 py-3 text-xs text-gray-400">{e.eventTime ? new Date(String(e.eventTime)).toLocaleString() : "—"}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-orange-500">{e.eventName || "—"}</td>
+                      <td className="px-4 py-3 text-xs text-gray-500">{e.eventSource || "—"}</td>
+                      <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-400">{e.userName || "—"}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-gray-400">{e.sourceIPAddress || "—"}</td>
+                      <td className="px-4 py-3 text-xs text-gray-400">{e.eventTime ? new Date(e.eventTime).toLocaleString() : "—"}</td>
                     </tr>
                   ))}
                 </tbody>
