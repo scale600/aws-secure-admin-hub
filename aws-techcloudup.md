@@ -161,48 +161,7 @@ During an interview: "Let me actually start this instance right now" — the mos
 
 ---
 
-## 7. Development Phases
-
-### Phase 1 — Foundation (1 week)
-- [x] Next.js 14 (App Router) + TypeScript + Tailwind CSS project setup
-- [x] AWS Amplify app creation with GitHub CI/CD pipeline
-- [x] Common layout (Sidebar Navigation, Header, Dark Mode toggle)
-- [x] Home page
-- [x] About Me page
-
-### Phase 2 — LIVE Backend (1.5 weeks)
-> Goal: Complete all real AWS API-backed features
-
-- [ ] Lambda + API Gateway (HTTP API) integration
-- [ ] DynamoDB AccessRequests CRUD (create, status update)
-- [ ] IAM Policy Generator Lambda function
-- [ ] **CloudTrail Trail activation** → S3 bucket → Lambda log parsing
-- [ ] **EC2 t3.micro instance provisioning** (default Stopped state)
-- [ ] EC2 Start/Stop API + state polling implementation
-- [ ] Cognito User Pool setup (Guest Mode fallback)
-
-### Phase 3 — Resource Showcase (1 week)
-> Goal: LIVE data + DEMO data combined with badge UI
-
-- [ ] Admin Dashboard
-  - 🟢 LIVE: DynamoDB request aggregation, CloudWatch metric cards
-  - 🔵 DEMO: Mock summary cards + Recharts charts
-- [ ] EC2 page: Real instance list + Start/Stop button
-- [ ] S3 page: Real bucket policy / PublicAccessBlock query
-- [ ] CloudTrail log viewer (real parsed data)
-- [ ] Security Center (IAM Generator LIVE, GuardDuty DEMO)
-- [ ] Automation: Lambda execution log (real CloudWatch Logs query)
-
-### Phase 4 — Polish & Deploy (0.5 weeks)
-- [ ] LIVE / DEMO badge UI applied consistently across all pages
-- [ ] Responsive design review (Mobile, Tablet, Desktop)
-- [ ] Custom Domain connection (Route 53 → Amplify)
-- [ ] GitHub README (architecture diagram + LIVE/DEMO table)
-- [ ] Lighthouse performance score ≥ 90
-
----
-
-## 8. Interview / Demo Scenario (3–4 min)
+## 7. Interview / Demo Scenario (3–4 min)
 
 ```
 1. Home Introduction (30s)
@@ -229,14 +188,14 @@ During an interview: "Let me actually start this instance right now" — the mos
 
 ---
 
-## 9. GitHub README One-liner
+## 8. GitHub README One-liner
 
 > **AWS Secure Admin Hub** is a live demo platform showcasing comprehensive AWS Cloud Administration — EC2 access control, IAM least-privilege policy generation, security monitoring, and resource management — built with Next.js 14, Lambda, DynamoDB, and AWS Amplify.
 
 
 ---
 
-## 10. Full Progress Checklist
+## 9. Full Progress Checklist
 
 > Work top to bottom in order. Check each item when complete.
 
@@ -331,7 +290,7 @@ During an interview: "Let me actually start this instance right now" — the mos
 
 ---
 
-## 11. Future Extensions (Optional)
+## 10. Future Extensions (Optional)
 
 | Feature | Description |
 |---------|-------------|
