@@ -1,19 +1,36 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
 # dependencies
-node_modules/
-.pnp
+/node_modules
+/.pnp
 .pnp.js
+.yarn/install-state.gz
 
-# Next.js
-.next/
-out/
-build/
+# testing
+/coverage
 
-# env files
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
+
+# vercel
+.vercel
 
 # AWS
 .aws/
@@ -21,28 +38,24 @@ cdk.out/
 *.tfstate
 *.tfstate.backup
 .terraform/
-
-# misc
-.DS_Store
-*.pem
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# IDE
-.vscode/
-.idea/
-
-# Amplify
+aws-exports.js
+awsconfiguration.json
+amplifyconfiguration.json
+amplify-build-config.json
 amplify/#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
 amplify/backend/.temp
-aws-exports.js
-awsconfiguration.json
-amplifyconfiguration.json
-amplify-build-config.json
 .secret-*
+*.pem
+
+# screenshots / test artifacts
+*.png
+*.jpg
+.playwright-mcp/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
