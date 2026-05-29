@@ -10,6 +10,7 @@ import {
   Zap,
   Cloud,
   Info,
+  BookOpen,
   ChevronLeft,
   ChevronRight,
   Menu,
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/security", icon: ShieldAlert, label: "Security" },
   { href: "/automation", icon: Zap, label: "Automation" },
   { href: "/about", icon: Info, label: "About" },
+  { href: "/walkthrough", icon: BookOpen, label: "How It Works" },
 ];
 
 export default function Sidebar() {
