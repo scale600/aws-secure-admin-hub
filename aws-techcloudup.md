@@ -16,7 +16,7 @@
 
 ## 2. Purpose
 
-This is not a simple demo site — it is a **live portfolio that proves real-world AWS Cloud Admin experience**.
+This is not a simple showcase — it is a **live demo that proves real-world AWS Cloud Admin experience**.
 
 - Covers every domain a Cloud Admin actually works with: Security, Compute, Networking, Storage, Monitoring, and Automation
 - Communicates hands-on implementation and operational experience to interviewers — not just theory
@@ -30,7 +30,7 @@ This is not a simple demo site — it is a **live portfolio that proves real-wor
 1. Reproduce the daily workflow of an AWS Admin as a working web application
 2. Explicitly highlight the balance between **Security** and **Operations**
 3. Maximize realism by integrating with real AWS services
-4. Complete the portfolio with GitHub source code + Live Demo
+4. Complete the demo with GitHub source code + Live URL
 
 ---
 
@@ -206,7 +206,7 @@ During an interview: "Let me actually start this instance right now" — the mos
 
 ```
 1. Home Introduction (30s)
-   "This is a live portfolio I built to demonstrate my AWS Cloud Admin capabilities."
+   "This is a live demo I built to demonstrate my AWS Cloud Admin capabilities."
 
 2. Admin Dashboard (30s)
    Walk through EC2, S3, cost, Security Score summary cards and real-time charts.
@@ -232,6 +232,7 @@ During an interview: "Let me actually start this instance right now" — the mos
 ## 9. GitHub README One-liner
 
 > **AWS Secure Admin Hub** is a live demo platform showcasing comprehensive AWS Cloud Administration — EC2 access control, IAM least-privilege policy generation, security monitoring, and resource management — built with Next.js 14, Lambda, DynamoDB, and AWS Amplify.
+
 
 ---
 
