@@ -32,18 +32,18 @@ export default function AboutPage() {
                 AWS Secure Admin Hub
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Live Demo — AWS Cloud Admin Capabilities
+                AWS Cloud Administration — Live Platform
               </p>
             </div>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-            This is not a simple showcase — it is a live demo that proves real-world
-            AWS Cloud Admin experience. Every feature labelled{" "}
+            A working platform built around real Cloud Admin workflows — not a mock UI.
+            Every feature labelled{" "}
             <span className="text-green-600 dark:text-green-400 font-medium">🟢 LIVE</span>{" "}
-            makes actual AWS API calls. Features labelled{" "}
+            makes actual AWS API calls against a live account. Features labelled{" "}
             <span className="text-blue-500 font-medium">🔵 DEMO</span>{" "}
-            use simulated data where real data would add cost or complexity without
-            demonstrating additional Cloud Admin skills.
+            use simulated data where real data would add cost or complexity
+            without adding meaningful technical depth.
           </p>
           <a
             href="https://github.com/scale600/aws-secure-admin-hub"

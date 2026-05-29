@@ -110,7 +110,9 @@ npm run dev
 
 ---
 
-## Target Role
+## Domain
 
-This project demonstrates daily AWS Cloud Admin workflows relevant to:
-**AWS Cloud Admin · Cloud Operations Engineer · SRE · DevOps (Mid~Senior)**
+AWS Cloud Administration — Security, Compute, Networking, Storage, Monitoring, Automation.
+
+Built to demonstrate what a working Cloud Admin platform looks like end-to-end:
+infrastructure provisioned, backend wired to real AWS APIs, frontend showing live data.

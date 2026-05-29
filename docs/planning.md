@@ -10,17 +10,17 @@
 | Domain | aws.techcloudup.com |
 | Live URL | https://aws.techcloudup.com (staging: https://main.d2paaciq0hy5p5.amplifyapp.com) |
 | GitHub | https://github.com/scale600/aws-secure-admin-hub |
-| Target Role | AWS Cloud Admin / Cloud Operations Engineer / SRE / DevOps (Mid~Senior) |
+| Focus Area | AWS Cloud Administration — Security, Compute, Monitoring, Automation |
 
 ---
 
 ## 2. Purpose
 
-This is not a simple showcase — it is a **live demo that proves real-world AWS Cloud Admin experience**.
+A working platform that demonstrates real-world AWS Cloud Admin workflows — not a mock UI, but a **live system backed by actual AWS services**.
 
-- Covers every domain a Cloud Admin actually works with: Security, Compute, Networking, Storage, Monitoring, and Automation
-- Communicates hands-on implementation and operational experience to interviewers — not just theory
-- Demonstrates real application of **AWS Well-Architected Framework**: Least Privilege, Secure Access, Operational Excellence
+- Covers every domain a Cloud Admin works with: Security, Compute, Networking, Storage, Monitoring, and Automation
+- Shows hands-on implementation depth across the full stack — infrastructure, backend, and frontend
+- Applies **AWS Well-Architected Framework** principles in practice: Least Privilege, Secure Access, Operational Excellence
 - Maximizes realism at minimal cost by leveraging the AWS Free Tier
 
 ---
@@ -76,7 +76,7 @@ This is not a simple showcase — it is a **live demo that proves real-world AWS
 
 ## 4-1. LIVE / DEMO Split Principle
 
-> Badges are displayed in the UI to be transparent with interviewers — knowing exactly what is real and what is simulated is itself a talking point.
+> Badges are displayed in the UI to make clear what is a real AWS API call and what is simulated — transparency about system boundaries is a core design principle.
 
 | Badge | Meaning | Features |
 |-------|---------|----------|
@@ -92,7 +92,7 @@ Demo:      Click [Start]
             → Real-time UI update
             → After demo: Click [Stop] → back to STOPPED
 ```
-During an interview: "Let me actually start this instance right now" — the most powerful proof of realism.
+Click [Start] during a live demo and the instance actually starts — real-time proof that the system is fully operational.
 
 ---
 
@@ -159,29 +159,32 @@ During an interview: "Let me actually start this instance right now" — the mos
 
 ---
 
-## 7. Interview / Demo Scenario (3–4 min)
+## 7. Demo Walkthrough (3–4 min)
 
 ```
-1. Home Introduction (30s)
-   "This is a live demo I built to demonstrate my AWS Cloud Admin capabilities."
+1. Introduction (30s)
+   AWS Secure Admin Hub — a live platform built around real Cloud Admin workflows.
 
 2. Admin Dashboard (30s)
-   Walk through EC2, S3, cost, Security Score summary cards and real-time charts.
+   Real-time DynamoDB + CloudWatch cards. API Gateway traffic bar chart. LIVE/DEMO split.
 
 3. EC2 Access Management (1m 30s) ★ Core
-   - Fill out access request form (select instance, enter purpose, set duration)
-   - Show Submit → Pending → Approved workflow
-   - Review the auto-generated IAM Policy JSON
-   - Explain: "Why Session Manager over SSH" (No inbound port, full audit trail)
+   - Submit access request form → DynamoDB write
+   - Approve → auto-generated Least Privilege IAM Policy JSON
+   - Session Manager rationale: no port 22, IAM control, full CloudTrail audit trail
 
-4. Security Center (45s)
-   - IAM Policy Generator: explain Least Privilege principle
-   - GuardDuty Findings: walk through anomaly detection response flow
-   - CloudTrail: "Who did what, when, and from where"
+4. Resource Management (45s)
+   - Start demo EC2 instance → real ec2.startInstances() → state polling
+   - S3 bucket security status via real GetPublicAccessBlock + GetBucketPolicy
+   - Stop instance after demo
 
-5. Closing (15s)
-   "This project demonstrates how I think as a Cloud Admin —
-    always balancing Security and Operations at the same time."
+5. Security Center (30s)
+   - IAM Policy Generator: Action + Resource → Least Privilege JSON
+   - CloudTrail viewer: trail active, S3 pipeline in progress
+
+6. Closing (15s)
+   Access control, least-privilege, audit logging, resource management — one working system.
+   Security and Operations, designed to work together.
 ```
 
 ---
@@ -285,7 +288,7 @@ During an interview: "Let me actually start this instance right now" — the mos
   - [x] Local development setup guide
 - [x] Lighthouse: Performance 72, Accessibility 96, Best Practices 100, SEO 100
   - LCP: 3.4s (SSR pre-fetch), CLS: 0.001 (near-zero)
-- [ ] Interview demo rehearsal (practice 3–4 min flow)
+- [x] Demo walkthrough rehearsal (3–4 min flow)
 
 ---
 
