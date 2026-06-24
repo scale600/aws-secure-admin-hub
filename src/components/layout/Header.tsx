@@ -5,7 +5,7 @@ import { Sun, Moon, User, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface HeaderProps {
-  title: string;
+  title: React.ReactNode;
 }
 
 export default function Header({ title }: HeaderProps) {
