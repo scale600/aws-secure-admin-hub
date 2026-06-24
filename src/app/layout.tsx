@@ -16,9 +16,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AWS Secure Admin Hub",
+  title: "IAM Secure Access",
   description:
-    "Live demo platform showcasing comprehensive AWS Cloud Administration",
+    "Live demo platform showcasing AWS IAM-driven access control and security management",
 };
 
 export default function RootLayout({

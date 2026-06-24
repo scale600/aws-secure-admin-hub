@@ -197,7 +197,7 @@ export default function WalkthroughPage() {
         {/* Intro */}
         <div className="space-y-2">
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            AWS Secure Admin Hub — Platform Walkthrough
+            IAM Secure Access — Platform Walkthrough
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
             A full walkthrough of every feature, what it connects to, and why it was built that way.
