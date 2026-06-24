@@ -29,7 +29,7 @@ export default function AboutPage() {
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-                IAM Secure Access
+                AWS IAM Secure Access Hub
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 AWS Cloud Administration — Live Platform

@@ -1,6 +1,6 @@
-# IAM Secure Access
+# AWS IAM Secure Access Hub
 
-**IAM Secure Access** is a live demo platform showcasing AWS IAM-driven access control — EC2 access requests, least-privilege policy generation, security monitoring, and resource management — built with Next.js 14, Lambda, DynamoDB, and AWS Amplify.
+**AWS IAM Secure Access Hub** is a live demo platform showcasing AWS IAM-driven access control — EC2 access requests, least-privilege policy generation, security monitoring, and resource management — built with Next.js 14, Lambda, DynamoDB, and AWS Amplify.
 
 🔗 **Live Demo:** https://aws.techcloudup.com  
 📦 **Staging:** https://main.d2paaciq0hy5p5.amplifyapp.com  

@@ -44,7 +44,7 @@ export default function Sidebar() {
         <Cloud className="shrink-0 text-orange-400" size={22} />
         {!collapsed && (
           <span className="font-semibold text-sm leading-tight">
-            IAM Secure Access
+            AWS IAM<br />Secure Access Hub
           </span>
         )}
       </div>
