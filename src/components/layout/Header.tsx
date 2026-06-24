@@ -20,7 +20,7 @@ export default function Header({ title }: HeaderProps) {
         {title}
       </h1>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         {/* External links */}
         <a
           href="https://linkedin.com/in/scale600"
