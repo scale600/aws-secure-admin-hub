@@ -16,7 +16,7 @@ export default function Header({ title }: HeaderProps) {
 
   return (
     <header className="flex items-center justify-between h-14 px-4 md:px-6 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-      <h1 className="text-base font-semibold text-gray-800 dark:text-gray-100 ml-10 md:ml-0">
+      <h1 className="text-base font-semibold text-gray-800 dark:text-gray-100 ml-10 md:ml-0 leading-none">
         {title}
       </h1>
 
