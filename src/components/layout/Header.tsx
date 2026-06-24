@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Sun, Moon, User, Bell, ExternalLink } from "lucide-react";
+import { Sun, Moon, User, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface HeaderProps {
@@ -20,7 +20,7 @@ export default function Header({ title }: HeaderProps) {
         {title}
       </h1>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         {/* External links */}
         <a
           href="https://linkedin.com/in/scale600"
@@ -67,14 +67,6 @@ export default function Header({ title }: HeaderProps) {
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         )}
-
-        {/* Notifications placeholder */}
-        <button
-          className="p-2 rounded-md text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          aria-label="Notifications"
-        >
-          <Bell size={18} />
-        </button>
 
         {/* User avatar */}
         <div className="flex items-center gap-2 pl-3 border-l border-gray-200 dark:border-gray-700">
