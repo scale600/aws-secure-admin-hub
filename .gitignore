@@ -63,7 +63,7 @@ amplify/backend/.temp
 next-env.d.ts
 
 # local-only docs (personal notes / interview scripts)
-aws.techcloudup-script.md
+docs/aws.techcloudup-script.md
 
 # opencode session state
 .omo/
