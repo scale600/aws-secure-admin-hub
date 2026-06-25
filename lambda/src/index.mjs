@@ -33,7 +33,9 @@ import { randomUUID } from "crypto";
 
 const REGION = process.env.AWS_REGION || "us-east-1";
 const TABLE = process.env.DYNAMODB_TABLE || "AccessRequests";
-const CLOUDTRAIL_BUCKET = process.env.CLOUDTRAIL_BUCKET || "aws-secure-admin-hub-cloudtrail-753523452116";
+const CLOUDTRAIL_BUCKET = process.env.CLOUDTRAIL_BUCKET || "";
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://aws.techcloudup.com,https://main.d2paaciq0hy5p5.amplifyapp.com").split(",").map((s) => s.trim());
+const ALLOWED_INSTANCE_PREFIX = process.env.ALLOWED_INSTANCE_PREFIX || "i-";
 
 const dynamo = new DynamoDBClient({ region: REGION });
 const ec2 = new EC2Client({ region: REGION });
@@ -41,12 +43,57 @@ const s3 = new S3Client({ region: REGION });
 const cw = new CloudWatchClient({ region: REGION });
 const cwLogs = new CloudWatchLogsClient({ region: REGION });
 
-function response(statusCode, body, headers = {}) {
+// ── Input Validation ──────────────────────────────────────────────
+
+const MAX_PURPOSE_LENGTH = 500;
+const MAX_STRING_LENGTH = 200;
+const VALID_PERMISSION_LEVELS = ["ReadOnly", "PowerUser", "Admin"];
+const VALID_REQUEST_STATUSES = ["Approved", "Rejected"];
+const EC2_INSTANCE_ID_RE = /^i-[0-9a-f]{8,17}$/i;
+const SAFE_STRING_RE = /^[\w\s\-.,;:!?@#&()[\]+=/']*$/;
+
+function sanitizeString(str, maxLen = MAX_STRING_LENGTH) {
+  if (typeof str !== "string") return "";
+  return str.slice(0, maxLen).trim();
+}
+
+function validateInstanceId(id) {
+  if (!id || typeof id !== "string" || !EC2_INSTANCE_ID_RE.test(id)) {
+    return false;
+  }
+  if (ALLOWED_INSTANCE_PREFIX && !id.startsWith(ALLOWED_INSTANCE_PREFIX)) {
+    return false;
+  }
+  return true;
+}
+
+function validateStringField(value, fieldName, maxLen = MAX_STRING_LENGTH) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return `${fieldName} is required`;
+  }
+  if (value.length > maxLen) {
+    return `${fieldName} exceeds maximum length of ${maxLen}`;
+  }
+  if (!SAFE_STRING_RE.test(value)) {
+    return `${fieldName} contains invalid characters`;
+  }
+  return null;
+}
+
+// ── Response Helpers ───────────────────────────────────────────────
+
+function getCorsOrigin(event) {
+  const origin = event?.headers?.origin || event?.headers?.Origin || "";
+  if (ALLOWED_ORIGINS.includes(origin)) return origin;
+  return ALLOWED_ORIGINS[0] || "";
+}
+
+function response(statusCode, body, headers = {}, event = null) {
   return {
     statusCode,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": event ? getCorsOrigin(event) : (ALLOWED_ORIGINS[0] || "*"),
       "Access-Control-Allow-Headers": "Content-Type,Authorization",
       "Access-Control-Allow-Methods": "GET,POST,PATCH,DELETE,OPTIONS",
       ...headers,
@@ -55,13 +102,54 @@ function response(statusCode, body, headers = {}) {
   };
 }
 
+function errorResponse(statusCode, message, event = null) {
+  console.error(`[${statusCode}] ${message}`);
+  return response(statusCode, { error: message }, {}, event);
+}
+
+function sanitizeError(err) {
+  // Never leak internal error details to clients
+  console.error("Internal error:", err);
+  return "Internal server error";
+}
+
 // ── Access Requests ──────────────────────────────────────────────
 
-async function createRequest(body) {
+async function createRequest(body, event) {
   const { userId, instanceId, purpose, duration, permissionLevel } = body;
-  if (!instanceId || !purpose || !duration || !permissionLevel) {
-    return response(400, { error: "Missing required fields" });
+
+  // Validate required fields
+  const missing = [];
+  if (!instanceId) missing.push("instanceId");
+  if (!purpose) missing.push("purpose");
+  if (duration == null) missing.push("duration");
+  if (!permissionLevel) missing.push("permissionLevel");
+  if (missing.length > 0) {
+    return errorResponse(400, `Missing required fields: ${missing.join(", ")}`, event);
   }
+
+  // Validate instanceId format
+  if (!validateInstanceId(instanceId)) {
+    return errorResponse(400, "Invalid instanceId format", event);
+  }
+
+  // Validate permissionLevel
+  if (!VALID_PERMISSION_LEVELS.includes(permissionLevel)) {
+    return errorResponse(400, `Invalid permissionLevel. Must be one of: ${VALID_PERMISSION_LEVELS.join(", ")}`, event);
+  }
+
+  // Validate purpose (prevent XSS, length check)
+  const purposeErr = validateStringField(purpose, "purpose", MAX_PURPOSE_LENGTH);
+  if (purposeErr) return errorResponse(400, purposeErr, event);
+
+  // Validate duration
+  const dur = Number(duration);
+  if (!Number.isFinite(dur) || dur < 1 || dur > 1440) {
+    return errorResponse(400, "duration must be between 1 and 1440 minutes", event);
+  }
+
+  const sanitizedUserId = sanitizeString(userId) || "guest";
+  const sanitizedPurpose = sanitizeString(purpose, MAX_PURPOSE_LENGTH);
   const requestId = randomUUID();
   const requestedAt = new Date().toISOString();
   const ttl = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30; // 30 days
@@ -71,10 +159,10 @@ async function createRequest(body) {
       TableName: TABLE,
       Item: marshall({
         requestId,
-        userId: userId || "guest",
+        userId: sanitizedUserId,
         instanceId,
-        purpose,
-        duration: Number(duration),
+        purpose: sanitizedPurpose,
+        duration: dur,
         permissionLevel,
         status: "Pending",
         requestedAt,
@@ -85,7 +173,7 @@ async function createRequest(body) {
     })
   );
 
-  return response(201, { requestId, status: "Pending", requestedAt });
+  return response(201, { requestId, status: "Pending", requestedAt }, {}, event);
 }
 
 async function listRequests(queryParams) {
@@ -115,16 +203,16 @@ async function listRequests(queryParams) {
   return response(200, { items, count: items.length });
 }
 
-async function updateRequestStatus(requestId, body) {
+async function updateRequestStatus(requestId, body, event) {
   const { status, approvedBy } = body;
-  if (!["Approved", "Rejected"].includes(status)) {
-    return response(400, { error: "status must be Approved or Rejected" });
+  if (!VALID_REQUEST_STATUSES.includes(status)) {
+    return errorResponse(400, `status must be one of: ${VALID_REQUEST_STATUSES.join(", ")}`, event);
   }
 
   const existing = await dynamo.send(
     new GetItemCommand({ TableName: TABLE, Key: marshall({ requestId }) })
   );
-  if (!existing.Item) return response(404, { error: "Request not found" });
+  if (!existing.Item) return errorResponse(404, "Request not found", event);
 
   const item = unmarshall(existing.Item);
   const approvedAt = new Date().toISOString();
@@ -133,6 +221,8 @@ async function updateRequestStatus(requestId, body) {
   if (status === "Approved") {
     generatedPolicy = generateIAMPolicy(item.instanceId, item.permissionLevel);
   }
+
+  const sanitizedApprovedBy = sanitizeString(approvedBy) || "admin";
 
   await dynamo.send(
     new UpdateItemCommand({
@@ -144,13 +234,13 @@ async function updateRequestStatus(requestId, body) {
       ExpressionAttributeValues: marshall({
         ":status": status,
         ":approvedAt": approvedAt,
-        ":approvedBy": approvedBy || "admin",
+        ":approvedBy": sanitizedApprovedBy,
         ":policy": generatedPolicy,
       }),
     })
   );
 
-  return response(200, { requestId, status, approvedAt, generatedPolicy });
+  return response(200, { requestId, status, approvedAt, generatedPolicy }, {}, event);
 }
 
 // ── IAM Policy Generator ──────────────────────────────────────────
@@ -200,27 +290,37 @@ function generateIAMPolicy(instanceId, permissionLevel) {
   return JSON.stringify(policy, null, 2);
 }
 
-async function generatePolicy(body) {
+async function generatePolicy(body, event) {
   const { instanceId, permissionLevel, actions, resource } = body;
 
   let policy;
   if (actions && resource) {
+    // Validate custom policy inputs
+    if (!Array.isArray(actions) || actions.length === 0) {
+      return errorResponse(400, "actions must be a non-empty array", event);
+    }
+    const actionErr = validateStringField(String(actions[0]), "actions[0]", MAX_STRING_LENGTH);
+    if (actionErr) return errorResponse(400, actionErr, event);
+
     policy = {
       Version: "2012-10-17",
       Statement: [
         {
           Sid: "LeastPrivilegePolicy",
           Effect: "Allow",
-          Action: Array.isArray(actions) ? actions : [actions],
+          Action: actions,
           Resource: resource,
         },
       ],
     };
   } else {
-    policy = JSON.parse(generateIAMPolicy(instanceId, permissionLevel || "ReadOnly"));
+    const level = VALID_PERMISSION_LEVELS.includes(permissionLevel)
+      ? permissionLevel
+      : "ReadOnly";
+    policy = JSON.parse(generateIAMPolicy(instanceId, level));
   }
 
-  return response(200, { policy: JSON.stringify(policy, null, 2) });
+  return response(200, { policy: JSON.stringify(policy, null, 2) }, {}, event);
 }
 
 // ── EC2 ───────────────────────────────────────────────────────────
@@ -242,8 +342,10 @@ async function describeInstances() {
   return response(200, { instances });
 }
 
-async function startInstance(instanceId) {
-  if (!instanceId) return response(400, { error: "instanceId required" });
+async function startInstance(instanceId, event) {
+  if (!validateInstanceId(instanceId)) {
+    return errorResponse(400, "Invalid or unauthorized instanceId", event);
+  }
   const result = await ec2.send(
     new StartInstancesCommand({ InstanceIds: [instanceId] })
   );
@@ -252,11 +354,13 @@ async function startInstance(instanceId) {
     instanceId,
     previousState: state?.PreviousState?.Name,
     currentState: state?.CurrentState?.Name,
-  });
+  }, {}, event);
 }
 
-async function stopInstance(instanceId) {
-  if (!instanceId) return response(400, { error: "instanceId required" });
+async function stopInstance(instanceId, event) {
+  if (!validateInstanceId(instanceId)) {
+    return errorResponse(400, "Invalid or unauthorized instanceId", event);
+  }
   const result = await ec2.send(
     new StopInstancesCommand({ InstanceIds: [instanceId] })
   );
@@ -265,7 +369,7 @@ async function stopInstance(instanceId) {
     instanceId,
     previousState: state?.PreviousState?.Name,
     currentState: state?.CurrentState?.Name,
-  });
+  }, {}, event);
 }
 
 // ── S3 ────────────────────────────────────────────────────────────
@@ -283,11 +387,15 @@ async function listBucketsInfo() {
         const c = pab.PublicAccessBlockConfiguration;
         publicAccessBlocked =
           c.BlockPublicAcls && c.IgnorePublicAcls && c.BlockPublicPolicy && c.RestrictPublicBuckets;
-      } catch {}
+      } catch (err) {
+        console.error(`Failed to get public access block for bucket ${b.Name}:`, err.message);
+      }
       try {
         await s3.send(new GetBucketPolicyCommand({ Bucket: b.Name }));
         policyExists = true;
-      } catch {}
+      } catch (err) {
+        console.error(`Failed to get bucket policy for ${b.Name}:`, err.message);
+      }
       return {
         name: b.Name,
         creationDate: b.CreationDate,
@@ -363,8 +471,8 @@ async function listCloudTrailEvents() {
     );
     const events = result.Items?.map(unmarshall) || [];
     return response(200, { events, source: "dynamodb" });
-  } catch {
-    // Table doesn't exist yet — return empty
+  } catch (err) {
+    console.error("CloudTrail events scan failed:", err.message);
     return response(200, { events: [], source: "pending" });
   }
 }
@@ -386,7 +494,8 @@ async function getLambdaHistory(functionName) {
       message: e.message?.trim(),
     })) || [];
     return response(200, { events, logGroupName });
-  } catch {
+  } catch (err) {
+    console.error(`Lambda history query failed for ${logGroupName}:`, err.message);
     return response(200, { events: [], logGroupName });
   }
 }
@@ -400,25 +509,25 @@ export const handler = async (event) => {
   const query = event.queryStringParameters || {};
   const pathParts = path.split("/").filter(Boolean);
 
-  if (method === "OPTIONS") return response(200, {});
+  if (method === "OPTIONS") return response(200, {}, {}, event);
 
   try {
     // POST /requests
-    if (method === "POST" && path === "/requests") return createRequest(body);
+    if (method === "POST" && path === "/requests") return createRequest(body, event);
     // GET /requests
     if (method === "GET" && path === "/requests") return listRequests(query);
     // PATCH /requests/{id}
     if (method === "PATCH" && pathParts[0] === "requests" && pathParts[1]) {
-      return updateRequestStatus(pathParts[1], body);
+      return updateRequestStatus(pathParts[1], body, event);
     }
     // POST /policy
-    if (method === "POST" && path === "/policy") return generatePolicy(body);
+    if (method === "POST" && path === "/policy") return generatePolicy(body, event);
     // GET /ec2/instances
     if (method === "GET" && path === "/ec2/instances") return describeInstances();
     // POST /ec2/start
-    if (method === "POST" && path === "/ec2/start") return startInstance(body.instanceId);
+    if (method === "POST" && path === "/ec2/start") return startInstance(body.instanceId, event);
     // POST /ec2/stop
-    if (method === "POST" && path === "/ec2/stop") return stopInstance(body.instanceId);
+    if (method === "POST" && path === "/ec2/stop") return stopInstance(body.instanceId, event);
     // GET /s3/buckets
     if (method === "GET" && path === "/s3/buckets") return listBucketsInfo();
     // GET /metrics
@@ -428,9 +537,8 @@ export const handler = async (event) => {
     // GET /lambda/history
     if (method === "GET" && path === "/lambda/history") return getLambdaHistory(query.functionName);
 
-    return response(404, { error: `Not found: ${method} ${path}` });
+    return errorResponse(404, `Not found: ${method} ${path}`, event);
   } catch (err) {
-    console.error("Handler error:", err);
-    return response(500, { error: err.message });
+    return errorResponse(500, sanitizeError(err), event);
   }
 };

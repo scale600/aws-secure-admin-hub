@@ -5,7 +5,7 @@ import { api, type AccessRequest, type CreateRequestInput } from "@/lib/api";
 import Badge from "@/components/ui/Badge";
 import { KeyRound, Plus, X, CheckCircle, XCircle, Clock, RefreshCw } from "lucide-react";
 
-const EC2_INSTANCE_ID = process.env.NEXT_PUBLIC_EC2_INSTANCE_ID || "i-02524a34715bc6930";
+const EC2_INSTANCE_ID = process.env.NEXT_PUBLIC_EC2_INSTANCE_ID || "";
 
 const PERMISSION_LEVELS = ["ReadOnly", "PowerUser", "Admin"] as const;
 

@@ -11,7 +11,7 @@ interface LogEvent {
 }
 
 const SSM_PATCH_MOCK = [
-  { instance: "i-02524a34715bc6930", os: "Amazon Linux 2023", status: "Compliant", installed: 142, missing: 0, time: "2026-05-29 10:00" },
+  { instance: "i-xxxxxxxxxxxxxxxxx", os: "Amazon Linux 2023", status: "Compliant", installed: 142, missing: 0, time: "2026-05-29 10:00" },
 ];
 
 const LAMBDA_FUNCTIONS = ["aws-secure-admin-hub"];

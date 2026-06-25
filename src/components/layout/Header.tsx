@@ -74,7 +74,7 @@ export default function Header({ title }: HeaderProps) {
             <User size={16} className="text-white" />
           </div>
           <span className="text-sm text-gray-700 dark:text-gray-300 hidden sm:block">
-            richard
+            Guest
           </span>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { api, type EC2Instance, type S3Bucket, type CloudWatchMetrics } from "@/
 import Badge from "@/components/ui/Badge";
 import { Server, Play, Square, RefreshCw, Shield, ShieldOff, TrendingUp } from "lucide-react";
 
-const EC2_INSTANCE_ID = process.env.NEXT_PUBLIC_EC2_INSTANCE_ID || "i-02524a34715bc6930";
+const EC2_INSTANCE_ID = process.env.NEXT_PUBLIC_EC2_INSTANCE_ID || "";
 
 const STATE_STYLES: Record<string, string> = {
   running: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",

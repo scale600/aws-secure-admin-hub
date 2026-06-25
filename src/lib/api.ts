@@ -1,8 +1,20 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
+function getAuthHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  // Include Cognito JWT token when available (set by auth provider)
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+  return headers;
+}
+
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
-    headers: { "Content-Type": "application/json" },
+    headers: getAuthHeaders(),
     ...options,
   });
   if (!res.ok) {

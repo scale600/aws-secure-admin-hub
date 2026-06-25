@@ -214,13 +214,13 @@ Click [Start] during a live demo and the instance actually starts — real-time 
 ### ⚙️ Phase 2 — LIVE Backend
 
 #### AWS Infrastructure Setup
-- [x] Create DynamoDB table (`AccessRequests`, TTL enabled, GSI added) → `arn:aws:dynamodb:us-east-1:753523452116:table/AccessRequests`
+- [x] Create DynamoDB table (`AccessRequests`, TTL enabled, GSI added) → `arn:aws:dynamodb:us-east-1:<account-id>:table/AccessRequests`
 - [x] Create Lambda function (Node.js 20, minimal IAM Role) → `aws-secure-admin-hub`
-- [x] Create API Gateway (HTTP API) → Lambda integration → `https://p64ztvrqjj.execute-api.us-east-1.amazonaws.com`
-- [x] Create Cognito User Pool (Guest Mode fallback) → `us-east-1_gAU7cIkpA`
-- [x] Create S3 bucket for CloudTrail logs (public access blocked) → `aws-secure-admin-hub-cloudtrail-753523452116`
+- [x] Create API Gateway (HTTP API) → Lambda integration → `https://<api-id>.execute-api.us-east-1.amazonaws.com`
+- [x] Create Cognito User Pool (Guest Mode fallback) → `us-east-1_xxxxxxxxx`
+- [x] Create S3 bucket for CloudTrail logs (public access blocked) → `aws-secure-admin-hub-cloudtrail-<account-id>`
 - [x] **Activate CloudTrail Trail** → send logs to S3 bucket above → `aws-secure-admin-hub-trail`
-- [x] **Provision EC2 t3.micro instance** (Amazon Linux 2023, basic security group) → `i-02524a34715bc6930`
+- [x] **Provision EC2 t3.micro instance** (Amazon Linux 2023, basic security group) → `i-xxxxxxxxxxxxxxxxx`
 - [ ] Verify EC2 Session Manager connection (confirm SSM Agent)
 - [x] Switch EC2 instance to Stopped state ✓
 

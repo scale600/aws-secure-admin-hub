@@ -7,7 +7,7 @@ import { Plus, Minus, AlertTriangle, CheckCircle2 } from "lucide-react";
 
 const GUARD_DUTY_MOCK = [
   { id: "gd-001", severity: "High", type: "UnauthorizedAccess:IAMUser/MaliciousIPCaller", resource: "IAMUser/temp-user", time: "10m ago" },
-  { id: "gd-002", severity: "Medium", type: "Recon:EC2/PortProbeUnprotectedPort", resource: "i-02524a34715bc6930", time: "1h ago" },
+  { id: "gd-002", severity: "Medium", type: "Recon:EC2/PortProbeUnprotectedPort", resource: "i-xxxxxxxxxxxxxxxxx", time: "1h ago" },
   { id: "gd-003", severity: "Low", type: "Policy:S3/BucketBlockPublicAccessDisabled", resource: "my-bucket", time: "3h ago" },
 ];
 
@@ -30,7 +30,7 @@ export default function SecurityClient() {
   const [events, setEvents] = useState<CloudTrailEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
   const [policyInput, setPolicyInput] = useState<GeneratePolicyInput>({
-    instanceId: "i-02524a34715bc6930",
+    instanceId: process.env.NEXT_PUBLIC_EC2_INSTANCE_ID || "",
     permissionLevel: "ReadOnly",
     actions: ["ec2:DescribeInstances"],
     resource: "*",
@@ -92,7 +92,7 @@ export default function SecurityClient() {
             <div className="p-6 text-center text-gray-400 text-sm space-y-1">
               <p>CloudTrail logs are being collected → S3 bucket.</p>
               <p className="text-xs">Events will appear here once the Lambda S3-trigger is configured (Phase 2 remaining item).</p>
-              <p className="text-xs font-mono text-orange-400">Trail: aws-secure-admin-hub-trail → aws-secure-admin-hub-cloudtrail-753523452116</p>
+              <p className="text-xs font-mono text-orange-400">Trail: aws-secure-admin-hub-trail → {process.env.NEXT_PUBLIC_CLOUDTRAIL_BUCKET || "aws-secure-admin-hub-cloudtrail-************"}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
